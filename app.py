@@ -155,7 +155,7 @@ st.markdown(
         <h1>☕ RECETARIO CAFETERIA IMG</h1>
         <span class="sgc-badge">COD: IMG-OP-IT-37</span>
     </div>
-    <p>Manual operativo e instrucción de trabajo para estandarización en barra — Sistema de Gestión de Calidad (SGC)</p>
+    <p>Manual operativo e instrucción de trabajo para estandarización en barra — (SGC)</p>
 </div>
 """,
     unsafe_allow_html=True,
