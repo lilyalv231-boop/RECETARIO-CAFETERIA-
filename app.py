@@ -1,37 +1,50 @@
+import base64
+import os
 import pandas as pd
 import streamlit as st
 
 # Configuración de página
 st.set_page_config(
-    page_title="Recetario Digital - Mercato",
+    page_title="Recetario Digital - Il Mercato Gentiloni",
     page_icon="☕",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
 # -----------------------------------------------------------------------------
-# 🖼️ NOMBRE EXACTO DEL ARCHIVO DE TU LOGO EN GITHUB
+# 🖼️ LECTURA DE LOGO OFICIAL
 # -----------------------------------------------------------------------------
-LOGO_URL = "Logo Mercato_negro-03 (2).png"
+LOGO_FILENAME = "Logo Mercato_negro-03 (2).png"
 
-# Render de Logo oficial en la esquina superior del menú
+# Función para convertir la imagen local a Base64 para el HTML del banner
+def get_image_base64(file_path):
+  if os.path.exists(file_path):
+    with open(file_path, "rb") as f:
+      data = f.read()
+    return f"data:image/png;base64,{base64.b64encode(data).decode()}"
+  return ""
+
+
+logo_base64 = get_image_base64(LOGO_FILENAME)
+
+# Render de Logo oficial en la esquina superior del menú lateral
 try:
-  st.logo(LOGO_URL, size="large")
+  st.logo(LOGO_FILENAME, size="large")
 except Exception:
   pass
 
 # -----------------------------------------------------------------------------
-# 🎨 PALETA DE COLORES ELEGANTE: AZUL MARINO (#0A192F / #1E3A8A) Y BLANCO
+# 🎨 PALETA DE COLORES ELEGANTE: AZUL MARINO Y BLANCO
 # -----------------------------------------------------------------------------
 st.markdown(
     """
 <style>
-    /* Fondo general gris muy claro / blanco pulido */
+    /* Fondo general */
     .stApp {
         background-color: #F8FAFC;
     }
     
-    /* Portada / Hero Banner con Azul Marino Profundo */
+    /* Portada / Hero Banner en Azul Marino */
     .cover-banner {
         background: linear-gradient(135deg, #0A192F 0%, #1E3A8A 60%, #1E40AF 100%);
         border-radius: 18px;
@@ -42,19 +55,24 @@ st.markdown(
         border: 1px solid #1E293B;
     }
     
-    .company-logo {
-        max-height: 85px;
-        margin-bottom: 15px;
+    .logo-container {
+        display: inline-block;
         background-color: #FFFFFF;
-        padding: 8px 16px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        padding: 10px 20px;
+        border-radius: 12px;
+        margin-bottom: 18px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .company-logo-banner {
+        max-height: 55px;
+        display: block;
     }
     
     .cover-banner h1 {
         color: #FFFFFF;
         font-family: 'Helvetica Neue', sans-serif;
-        font-size: 2.3rem;
+        font-size: 2.2rem;
         font-weight: 800;
         margin: 0 0 8px 0;
         letter-spacing: -0.5px;
@@ -62,13 +80,13 @@ st.markdown(
     
     .cover-banner p {
         color: #93C5FD;
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         margin: 0;
         max-width: 850px;
         font-weight: 400;
     }
 
-    /* Badges / Etiquetas en gama de Azules y Blanco */
+    /* Badges / Etiquetas */
     .badge { 
         display: inline-block; 
         padding: 5px 14px; 
@@ -90,10 +108,8 @@ st.markdown(
         box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05) !important;
     }
 
-    /* Pestañas de Tamaños en Azul Marino */
-    .stTabs [data-baseweb="tab-list"] { 
-        gap: 8px; 
-    }
+    /* Pestañas */
+    .stTabs [data-baseweb="tab-list"] { gap: 8px; }
     .stTabs [data-baseweb="tab"] { 
         background-color: #F1F5F9; 
         border-radius: 8px 8px 0 0; 
@@ -110,11 +126,19 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Portada con Logo e Identidad
+# Generación condicional del contenedor del logo en la portada
+logo_html = (
+    f'<div class="logo-container"><img src="{logo_base64}"'
+    ' class="company-logo-banner" alt="Il Mercato Gentiloni"></div>'
+    if logo_base64
+    else ""
+)
+
+# Portada Banner
 st.markdown(
     f"""
 <div class="cover-banner">
-    <img src="{LOGO_URL}" class="company-logo" alt="Logo Mercato">
+    {logo_html}
     <h1>☕ Manual Operativo & Recetario de Barra</h1>
     <p>Estandarización institucional de bebidas: dosificación exacta por presentación, insumos base y modificadores.</p>
 </div>
@@ -122,7 +146,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Diccionario inteligente de imágenes por palabra clave
+# Diccionario inteligente de imágenes
 BEVERAGE_IMAGES = {
     "AMERICANO": (
         "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80"
@@ -304,8 +328,8 @@ except Exception as e:
   st.error(f"Error al leer el archivo Excel: {e}")
   st.stop()
 
-# Sidebar
-st.sidebar.image(LOGO_URL, use_container_width=True)
+# Menú Lateral
+st.sidebar.image(LOGO_FILENAME, use_container_width=True)
 st.sidebar.title("Filtros de Barra")
 cat_filtro = st.sidebar.selectbox(
     "Sección del Menú:",
@@ -328,7 +352,7 @@ if busqueda:
           .str.contains(busqueda, case=False, na=False)
   ]
 
-# Métricas rápidas
+# Métricas
 col_m1, col_m2, col_m3 = st.columns(3)
 col_m1.metric("☕ Total Recetas", len(df_display))
 col_m2.metric("📋 Categoría", cat_filtro)
@@ -336,7 +360,7 @@ col_m3.metric("⏱️ SLA Promedio", "2 - 5 min")
 
 st.markdown("---")
 
-# Renderizado de Tarjetas Visuales
+# Renderizado de Tarjetas
 if df_display.empty:
   st.warning("No se encontraron recetas con los criterios seleccionados.")
 else:
