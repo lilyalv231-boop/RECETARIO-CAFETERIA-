@@ -9,28 +9,51 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Estilos CSS
+# 🎨 ESTILOS CSS CON PORTADA FOTOGRÁFICA DE IMPACTO
 st.markdown(
     """
 <style>
     .stApp { background-color: #faf7f2; }
-    .hero-banner {
-        background: linear-gradient(135deg, #2c1d11 0%, #4a3222 100%);
-        color: #fceade;
-        padding: 24px 30px;
-        border-radius: 16px;
-        margin-bottom: 25px;
-        box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+    
+    /* Portada / Hero Banner con Imagen de Fondo */
+    .cover-banner {
+        background-image: linear-gradient(rgba(20, 10, 5, 0.65), rgba(20, 10, 5, 0.75)), 
+                          url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        border-radius: 20px;
+        padding: 45px 35px;
+        color: #ffffff;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        border: 1px solid rgba(255,255,255,0.1);
     }
-    .hero-banner h1 { color: #f7d0a1; margin: 0; font-family: 'Helvetica Neue', sans-serif; font-weight: 700; }
-    .hero-banner p { color: #e0d0c1; margin-top: 5px; font-size: 1.05rem; }
+    
+    .cover-banner h1 {
+        color: #f7d0a1;
+        font-family: 'Helvetica Neue', sans-serif;
+        font-size: 2.4rem;
+        font-weight: 800;
+        margin: 0 0 10px 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+    }
+    
+    .cover-banner p {
+        color: #f0e6df;
+        font-size: 1.15rem;
+        margin: 0;
+        max-width: 800px;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    }
 
+    /* Badges / Etiquetas estilizadas */
     .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; margin-right: 6px; }
     .badge-cat { background-color: #f3e5f5; color: #7b1fa2; border: 1px solid #e1bee7; }
     .badge-prep { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
     .badge-equip { background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
     .badge-life { background-color: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
 
+    /* Estilos de Pestañas */
     .stTabs [data-baseweb="tab-list"] { gap: 8px; }
     .stTabs [data-baseweb="tab"] { background-color: #efebe9; border-radius: 8px 8px 0 0; padding: 8px 16px; font-weight: bold; }
     .stTabs [aria-selected="true"] { background-color: #6d4c41 !important; color: white !important; }
@@ -39,12 +62,12 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Banner superior
+# Render de la Portada
 st.markdown(
     """
-<div class="hero-banner">
-    <h1>☕ Manual & Recetario Operativo de Barra</h1>
-    <p>Estandarización visual de bebidas, dosificación exacta e insumos por presentación.</p>
+<div class="cover-banner">
+    <h1>☕ Manual Operativo & Recetario de Barra</h1>
+    <p>Guía de estandarización para baristas: dosificación exacta por tamaño, insumos base y opciones de modificadores.</p>
 </div>
 """,
     unsafe_allow_html=True,
@@ -139,7 +162,6 @@ def parse_cafeteria_excel(file_path):
       nombre = sub_df.iloc[0, 5] if pd.notna(sub_df.iloc[0, 5]) else "Sin Nombre"
       categoria = sheet_name
 
-      # Buscar URL directa en Excel o asignar por palabra clave
       foto_url = None
       if len(sub_df) > 2 and pd.notna(sub_df.iloc[2, 5]):
         candidate = str(sub_df.iloc[2, 5]).strip()
