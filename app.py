@@ -5,7 +5,7 @@ import streamlit as st
 
 # Configuración de página
 st.set_page_config(
-    page_title="RECETARIO CAFETERIA IMG",
+    page_title="RECETARIO CAFETERIA IMG | IMG-OP-IT-37",
     page_icon="☕",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -34,7 +34,7 @@ except Exception:
   pass
 
 # -----------------------------------------------------------------------------
-# 🎨 ESTILOS LIMPIOS: FONDO BLANCO Y TEXTOS EN AZUL MARINO (#0A192F)
+# 🎨 ESTILOS LIMPIOS CON CÓDIGO SGC (AZUL MARINO & BLANCO)
 # -----------------------------------------------------------------------------
 st.markdown(
     """
@@ -44,7 +44,7 @@ st.markdown(
         background-color: #FFFFFF;
     }
     
-    /* Header Superior sin Banner Azul */
+    /* Header Superior */
     .clean-header {
         padding: 10px 0px 20px 0px;
         border-bottom: 2px solid #E2E8F0;
@@ -60,16 +60,30 @@ st.markdown(
     .clean-header h1 {
         color: #0A192F;
         font-family: 'Helvetica Neue', sans-serif;
-        font-size: 2.3rem;
+        font-size: 2.2rem;
         font-weight: 800;
         margin: 0 0 6px 0;
         letter-spacing: -0.5px;
     }
     
+    /* Etiqueta / Badge para el código SGC */
+    .sgc-badge {
+        display: inline-block;
+        background-color: #0A192F;
+        color: #FFFFFF;
+        font-size: 0.85rem;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 6px;
+        margin-left: 10px;
+        vertical-align: middle;
+        letter-spacing: 0.5px;
+    }
+    
     .clean-header p {
         color: #334155;
-        font-size: 1.1rem;
-        margin: 0;
+        font-size: 1.05rem;
+        margin: 4px 0 0 0;
         font-weight: 500;
     }
 
@@ -121,13 +135,13 @@ logo_html = (
     else ""
 )
 
-# Encabezado Limpio con Fondo Blanco y Letras Azul Marino
+# Encabezado con Código de Identificación SGC
 st.markdown(
     f"""
 <div class="clean-header">
     {logo_html}
-    <h1>☕ RECETARIO CAFETERIA IMG</h1>
-    <p>Manual operativo y guía de estandarización para baristas — Il Mercato Gentiloni</p>
+    <h1>☕ RECETARIO CAFETERIA IMG <span class="sgc-badge">COD: IMG-OP-IT-37</span></h1>
+    <p>Manual operativo e instrucción de trabajo para estandarización en barra — Sistema de Gestión de Calidad (SGC)</p>
 </div>
 """,
     unsafe_allow_html=True,
@@ -343,7 +357,7 @@ if busqueda:
 col_m1, col_m2, col_m3 = st.columns(3)
 col_m1.metric("☕ Total Recetas", len(df_display))
 col_m2.metric("📋 Categoría", cat_filtro)
-col_m3.metric("⏱️ SLA Promedio", "2 - 5 min")
+col_m3.metric("⏱️ Tiempo Promedio", "2 - 5 min")
 
 st.markdown("---")
 
