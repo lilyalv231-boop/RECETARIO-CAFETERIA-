@@ -9,16 +9,11 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# 🎨 ESTILOS CSS AVANZADOS Y PALETA DE COLORES CAFETERÍA
+# Estilos CSS
 st.markdown(
     """
 <style>
-    /* Fondo general */
-    .stApp {
-        background-color: #faf7f2;
-    }
-    
-    /* Header principal estilo Banner */
+    .stApp { background-color: #faf7f2; }
     .hero-banner {
         background: linear-gradient(135deg, #2c1d11 0%, #4a3222 100%);
         color: #fceade;
@@ -27,60 +22,24 @@ st.markdown(
         margin-bottom: 25px;
         box-shadow: 0 6px 15px rgba(0,0,0,0.12);
     }
-    .hero-banner h1 {
-        color: #f7d0a1;
-        margin: 0;
-        font-family: 'Helvetica Neue', sans-serif;
-        font-weight: 700;
-    }
-    .hero-banner p {
-        color: #e0d0c1;
-        margin-top: 5px;
-        font-size: 1.05rem;
-    }
+    .hero-banner h1 { color: #f7d0a1; margin: 0; font-family: 'Helvetica Neue', sans-serif; font-weight: 700; }
+    .hero-banner p { color: #e0d0c1; margin-top: 5px; font-size: 1.05rem; }
 
-    /* Badges / Etiquetas estilizadas */
-    .badge {
-        display: inline-block;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 0.82rem;
-        font-weight: 600;
-        margin-right: 6px;
-    }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; margin-right: 6px; }
     .badge-cat { background-color: #f3e5f5; color: #7b1fa2; border: 1px solid #e1bee7; }
     .badge-prep { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
     .badge-equip { background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
     .badge-life { background-color: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
 
-    /* Tarjeta de Receta */
-    .recipe-card-header {
-        background-color: #ffffff;
-        border-radius: 12px;
-        padding: 15px;
-        border-left: 5px solid #8d6e63;
-    }
-    
-    /* Pestañas de tamaños */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-    }
-    .stTabs [data-baseweb="tab"] {
-        background-color: #efebe9;
-        border-radius: 8px 8px 0 0;
-        padding: 8px 16px;
-        font-weight: bold;
-    }
-    .stTabs [aria-selected="true"] {
-        background-color: #6d4c41 !important;
-        color: white !important;
-    }
+    .stTabs [data-baseweb="tab-list"] { gap: 8px; }
+    .stTabs [data-baseweb="tab"] { background-color: #efebe9; border-radius: 8px 8px 0 0; padding: 8px 16px; font-weight: bold; }
+    .stTabs [aria-selected="true"] { background-color: #6d4c41 !important; color: white !important; }
 </style>
 """,
     unsafe_allow_html=True,
 )
 
-# Banner de Encabezado
+# Banner superior
 st.markdown(
     """
 <div class="hero-banner">
@@ -91,22 +50,46 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
-# Imágenes por defecto para la cafetería
-DEFAULT_IMAGES = {
-    "ESPECIALES": (
-        "https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=600&q=80"
-    ),
-    "CLÁSICOS": (
+# Diccionario inteligente de imágenes por palabra clave
+BEVERAGE_IMAGES = {
+    "AMERICANO": (
         "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80"
     ),
-    "FRAPPPES": (
-        "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80"
+    "CAPUCCINO": (
+        "https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=600&q=80"
     ),
-    "DE TEMPORADA": (
+    "LATTE": (
+        "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&w=600&q=80"
+    ),
+    "MATCHA": (
+        "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=600&q=80"
+    ),
+    "CHOCOLATE": (
+        "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?auto=format&fit=crop&w=600&q=80"
+    ),
+    "CHAI": (
         "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
     ),
+    "FRAPPE": (
+        "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80"
+    ),
+    "ESPRESSO": (
+        "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80"
+    ),
+    "MOCHA": (
+        "https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=600&q=80"
+    ),
+    "PUMPKIN": (
+        "https://images.unsplash.com/photo-1507138086030-616c3b6db768?auto=format&fit=crop&w=600&q=80"
+    ),
+    "COCCO": (
+        "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=600&q=80"
+    ),
 }
+
+DEFAULT_IMAGE = (
+    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80"
+)
 
 MODIFIER_KEYWORDS = [
     "LECHE ENTERA",
@@ -120,6 +103,16 @@ MODIFIER_KEYWORDS = [
     "CAFE DESCAFEINADO",
     "MODIFICADORES",
 ]
+
+
+def get_image_for_drink(nombre_bebida, sheet_name):
+  nombre_upper = str(nombre_bebida).upper()
+  for key, url in BEVERAGE_IMAGES.items():
+    if key in nombre_upper:
+      return url
+  if "FRAPP" in sheet_name.upper():
+    return BEVERAGE_IMAGES["FRAPPE"]
+  return DEFAULT_IMAGE
 
 
 @st.cache_data
@@ -146,7 +139,7 @@ def parse_cafeteria_excel(file_path):
       nombre = sub_df.iloc[0, 5] if pd.notna(sub_df.iloc[0, 5]) else "Sin Nombre"
       categoria = sheet_name
 
-      # Intentar extraer URL de fotografía de la fila 8 si existe
+      # Buscar URL directa en Excel o asignar por palabra clave
       foto_url = None
       if len(sub_df) > 2 and pd.notna(sub_df.iloc[2, 5]):
         candidate = str(sub_df.iloc[2, 5]).strip()
@@ -154,7 +147,7 @@ def parse_cafeteria_excel(file_path):
           foto_url = candidate
 
       if not foto_url:
-        foto_url = DEFAULT_IMAGES.get(categoria, DEFAULT_IMAGES["CLÁSICOS"])
+        foto_url = get_image_for_drink(nombre, categoria)
 
       tiempo_prep, tiempo_vida, equipo = "2-5 MIN", "10 MIN", "MÁQUINA ESPRESSO"
 
@@ -193,7 +186,6 @@ def parse_cafeteria_excel(file_path):
                 kw in ing_name.upper() for kw in MODIFIER_KEYWORDS
             )
 
-            # 12 oz
             cant_12 = ing_row.iloc[7] if len(ing_row) > 7 else None
             um_12 = ing_row.iloc[8] if len(ing_row) > 8 else ""
             if pd.notna(cant_12) and cant_12 != 0:
@@ -203,7 +195,6 @@ def parse_cafeteria_excel(file_path):
               else:
                 ing_base_12.append(item_str)
 
-            # 16 oz
             cant_16 = ing_row.iloc[10] if len(ing_row) > 10 else None
             um_16 = ing_row.iloc[11] if len(ing_row) > 11 else ""
             if pd.notna(cant_16) and cant_16 != 0:
@@ -242,7 +233,7 @@ except Exception as e:
   st.error(f"Error al leer el archivo Excel: {e}")
   st.stop()
 
-# Sidebar con diseño de Filtros
+# Sidebar
 st.sidebar.image(
     "https://cdn-icons-png.flaticon.com/512/924/924514.png", width=80
 )
@@ -268,7 +259,7 @@ if busqueda:
           .str.contains(busqueda, case=False, na=False)
   ]
 
-# Métricas visuales estilo Cards
+# Métricas
 col_m1, col_m2, col_m3 = st.columns(3)
 col_m1.metric("☕ Total Recetas", len(df_display))
 col_m2.metric("📋 Categoría", cat_filtro)
@@ -276,7 +267,7 @@ col_m3.metric("⏱️ SLA Promedio", "2 - 5 min")
 
 st.markdown("---")
 
-# Renderizado de Tarjetas Visuales (2 por fila)
+# Renderizado de Tarjetas
 if df_display.empty:
   st.warning("No se encontraron recetas con los criterios seleccionados.")
 else:
@@ -284,7 +275,6 @@ else:
   for idx, row in df_display.reset_index(drop=True).iterrows():
     with cols[idx % 2]:
       with st.container(border=True):
-        # Encabezado con foto a la izquierda e información a la derecha
         col_img, col_detail = st.columns([1, 1.4])
 
         with col_img:
@@ -305,7 +295,6 @@ else:
 
         st.write("")
 
-        # Pestañas interactivas para 12 oz y 16 oz
         tab12, tab16 = st.tabs(["🥤 Presentación 12 oz", "🥤 Presentación 16 oz"])
 
         with tab12:
