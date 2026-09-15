@@ -34,7 +34,7 @@ except Exception:
   pass
 
 # -----------------------------------------------------------------------------
-# 🎨 ESTILOS LIMPIOS CON CÓDIGO SGC (AZUL MARINO & BLANCO)
+# 🎨 ESTILOS LIMPIOS: ENCABEZADO CENTRADO, TIPOGRAFÍA GRANDE & SGC
 # -----------------------------------------------------------------------------
 st.markdown(
     """
@@ -44,26 +44,37 @@ st.markdown(
         background-color: #FFFFFF;
     }
     
-    /* Header Superior */
-    .clean-header {
-        padding: 10px 0px 20px 0px;
+    /* Header Superior Centrado */
+    .centered-header {
+        text-align: center;
+        padding: 15px 0px 25px 0px;
         border-bottom: 2px solid #E2E8F0;
-        margin-bottom: 25px;
+        margin-bottom: 30px;
     }
     
-    .clean-header-logo {
-        max-height: 65px;
-        margin-bottom: 15px;
+    .centered-header-logo {
+        max-height: 85px;
+        margin: 0 auto 15px auto;
         display: block;
     }
     
-    .clean-header h1 {
+    .header-title-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+    }
+    
+    .centered-header h1 {
         color: #0A192F;
         font-family: 'Helvetica Neue', sans-serif;
-        font-size: 2.2rem;
+        font-size: 3rem;
         font-weight: 800;
-        margin: 0 0 6px 0;
+        margin: 0;
         letter-spacing: -0.5px;
+        line-height: 1.1;
     }
     
     /* Etiqueta / Badge para el código SGC */
@@ -71,20 +82,20 @@ st.markdown(
         display: inline-block;
         background-color: #0A192F;
         color: #FFFFFF;
-        font-size: 0.85rem;
+        font-size: 0.95rem;
         font-weight: 700;
-        padding: 4px 12px;
-        border-radius: 6px;
-        margin-left: 10px;
-        vertical-align: middle;
-        letter-spacing: 0.5px;
+        padding: 6px 14px;
+        border-radius: 8px;
+        letter-spacing: 0.8px;
+        box-shadow: 0 2px 6px rgba(10, 25, 47, 0.15);
     }
     
-    .clean-header p {
-        color: #334155;
-        font-size: 1.05rem;
-        margin: 4px 0 0 0;
+    .centered-header p {
+        color: #475569;
+        font-size: 1.15rem;
+        margin: 8px auto 0 auto;
         font-weight: 500;
+        max-width: 800px;
     }
 
     /* Badges / Etiquetas */
@@ -129,18 +140,21 @@ st.markdown(
 
 # Render del Logo en el Encabezado
 logo_html = (
-    f'<img src="{logo_base64}" class="clean-header-logo" alt="Il Mercato'
+    f'<img src="{logo_base64}" class="centered-header-logo" alt="Il Mercato'
     ' Gentiloni">'
     if logo_base64
     else ""
 )
 
-# Encabezado con Código de Identificación SGC
+# Encabezado Centrado con Tipografía Grande y Badge SGC
 st.markdown(
     f"""
-<div class="clean-header">
+<div class="centered-header">
     {logo_html}
-    <h1>☕ RECETARIO CAFETERIA IMG <span class="sgc-badge">COD: IMG-OP-IT-37</span></h1>
+    <div class="header-title-container">
+        <h1>☕ RECETARIO CAFETERIA IMG</h1>
+        <span class="sgc-badge">COD: IMG-OP-IT-37</span>
+    </div>
     <p>Manual operativo e instrucción de trabajo para estandarización en barra — Sistema de Gestión de Calidad (SGC)</p>
 </div>
 """,
