@@ -3,71 +3,120 @@ import streamlit as st
 
 # Configuración de página
 st.set_page_config(
-    page_title="Recetario Digital - Cafetería",
+    page_title="Recetario Digital - Mercato",
     page_icon="☕",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# 🎨 ESTILOS CSS CON PORTADA FOTOGRÁFICA DE IMPACTO
+# -----------------------------------------------------------------------------
+# 🖼️ NOMBRE EXACTO DEL ARCHIVO DE TU LOGO EN GITHUB
+# -----------------------------------------------------------------------------
+LOGO_URL = "Logo Mercato_negro-03 (2).png"
+
+# Render de Logo oficial en la esquina superior del menú
+try:
+  st.logo(LOGO_URL, size="large")
+except Exception:
+  pass
+
+# -----------------------------------------------------------------------------
+# 🎨 PALETA DE COLORES ELEGANTE: AZUL MARINO (#0A192F / #1E3A8A) Y BLANCO
+# -----------------------------------------------------------------------------
 st.markdown(
     """
 <style>
-    .stApp { background-color: #faf7f2; }
+    /* Fondo general gris muy claro / blanco pulido */
+    .stApp {
+        background-color: #F8FAFC;
+    }
     
-    /* Portada / Hero Banner con Imagen de Fondo */
+    /* Portada / Hero Banner con Azul Marino Profundo */
     .cover-banner {
-        background-image: linear-gradient(rgba(20, 10, 5, 0.65), rgba(20, 10, 5, 0.75)), 
-                          url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1600&q=80');
-        background-size: cover;
-        background-position: center;
-        border-radius: 20px;
-        padding: 45px 35px;
-        color: #ffffff;
-        margin-bottom: 30px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-        border: 1px solid rgba(255,255,255,0.1);
+        background: linear-gradient(135deg, #0A192F 0%, #1E3A8A 60%, #1E40AF 100%);
+        border-radius: 18px;
+        padding: 35px 30px;
+        color: #FFFFFF;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 25px rgba(10, 25, 47, 0.2);
+        border: 1px solid #1E293B;
+    }
+    
+    .company-logo {
+        max-height: 85px;
+        margin-bottom: 15px;
+        background-color: #FFFFFF;
+        padding: 8px 16px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
     
     .cover-banner h1 {
-        color: #f7d0a1;
+        color: #FFFFFF;
         font-family: 'Helvetica Neue', sans-serif;
-        font-size: 2.4rem;
+        font-size: 2.3rem;
         font-weight: 800;
-        margin: 0 0 10px 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        margin: 0 0 8px 0;
+        letter-spacing: -0.5px;
     }
     
     .cover-banner p {
-        color: #f0e6df;
-        font-size: 1.15rem;
+        color: #93C5FD;
+        font-size: 1.1rem;
         margin: 0;
-        max-width: 800px;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        max-width: 850px;
+        font-weight: 400;
     }
 
-    /* Badges / Etiquetas estilizadas */
-    .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; margin-right: 6px; }
-    .badge-cat { background-color: #f3e5f5; color: #7b1fa2; border: 1px solid #e1bee7; }
-    .badge-prep { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-    .badge-equip { background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
-    .badge-life { background-color: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
+    /* Badges / Etiquetas en gama de Azules y Blanco */
+    .badge { 
+        display: inline-block; 
+        padding: 5px 14px; 
+        border-radius: 20px; 
+        font-size: 0.82rem; 
+        font-weight: 700; 
+        margin-right: 6px; 
+    }
+    .badge-cat { background-color: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; }
+    .badge-prep { background-color: #F0FDF4; color: #166534; border: 1px solid #BBF7D0; }
+    .badge-equip { background-color: #F8FAFC; color: #334155; border: 1px solid #E2E8F0; }
+    .badge-life { background-color: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
 
-    /* Estilos de Pestañas */
-    .stTabs [data-baseweb="tab-list"] { gap: 8px; }
-    .stTabs [data-baseweb="tab"] { background-color: #efebe9; border-radius: 8px 8px 0 0; padding: 8px 16px; font-weight: bold; }
-    .stTabs [aria-selected="true"] { background-color: #6d4c41 !important; color: white !important; }
+    /* Tarjetas de Receta */
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        background-color: #FFFFFF !important;
+        border-radius: 14px !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05) !important;
+    }
+
+    /* Pestañas de Tamaños en Azul Marino */
+    .stTabs [data-baseweb="tab-list"] { 
+        gap: 8px; 
+    }
+    .stTabs [data-baseweb="tab"] { 
+        background-color: #F1F5F9; 
+        border-radius: 8px 8px 0 0; 
+        padding: 8px 18px; 
+        font-weight: 700;
+        color: #475569;
+    }
+    .stTabs [aria-selected="true"] { 
+        background-color: #0A192F !important; 
+        color: #FFFFFF !important; 
+    }
 </style>
 """,
     unsafe_allow_html=True,
 )
 
-# Render de la Portada
+# Portada con Logo e Identidad
 st.markdown(
-    """
+    f"""
 <div class="cover-banner">
+    <img src="{LOGO_URL}" class="company-logo" alt="Logo Mercato">
     <h1>☕ Manual Operativo & Recetario de Barra</h1>
-    <p>Guía de estandarización para baristas: dosificación exacta por tamaño, insumos base y opciones de modificadores.</p>
+    <p>Estandarización institucional de bebidas: dosificación exacta por presentación, insumos base y modificadores.</p>
 </div>
 """,
     unsafe_allow_html=True,
@@ -256,9 +305,7 @@ except Exception as e:
   st.stop()
 
 # Sidebar
-st.sidebar.image(
-    "https://cdn-icons-png.flaticon.com/512/924/924514.png", width=80
-)
+st.sidebar.image(LOGO_URL, use_container_width=True)
 st.sidebar.title("Filtros de Barra")
 cat_filtro = st.sidebar.selectbox(
     "Sección del Menú:",
@@ -281,7 +328,7 @@ if busqueda:
           .str.contains(busqueda, case=False, na=False)
   ]
 
-# Métricas
+# Métricas rápidas
 col_m1, col_m2, col_m3 = st.columns(3)
 col_m1.metric("☕ Total Recetas", len(df_display))
 col_m2.metric("📋 Categoría", cat_filtro)
@@ -289,7 +336,7 @@ col_m3.metric("⏱️ SLA Promedio", "2 - 5 min")
 
 st.markdown("---")
 
-# Renderizado de Tarjetas
+# Renderizado de Tarjetas Visuales
 if df_display.empty:
   st.warning("No se encontraron recetas con los criterios seleccionados.")
 else:
