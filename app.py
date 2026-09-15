@@ -34,7 +34,7 @@ except Exception:
   pass
 
 # -----------------------------------------------------------------------------
-# 🎨 ESTILOS LIMPIOS: ENCABEZADO CENTRADO, TIPOGRAFÍA GRANDE & SGC
+# 🎨 ESTILOS CSS: ENCABEZADO Y TARJETAS DE MÉTRICAS CENTRADAS
 # -----------------------------------------------------------------------------
 st.markdown(
     """
@@ -49,7 +49,7 @@ st.markdown(
         text-align: center;
         padding: 15px 0px 25px 0px;
         border-bottom: 2px solid #E2E8F0;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
     }
     
     .centered-header-logo {
@@ -77,7 +77,6 @@ st.markdown(
         line-height: 1.1;
     }
     
-    /* Etiqueta / Badge para el código SGC */
     .sgc-badge {
         display: inline-block;
         background-color: #0A192F;
@@ -98,7 +97,7 @@ st.markdown(
         max-width: 800px;
     }
 
-    /* Badges / Etiquetas */
+    /* Badges / Etiquetas de Recetas */
     .badge { 
         display: inline-block; 
         padding: 5px 14px; 
@@ -146,7 +145,7 @@ logo_html = (
     else ""
 )
 
-# Encabezado Centrado con Tipografía Grande y Badge SGC
+# Encabezado Principal
 st.markdown(
     f"""
 <div class="centered-header">
@@ -155,13 +154,13 @@ st.markdown(
         <h1>☕ RECETARIO CAFETERIA IMG</h1>
         <span class="sgc-badge">COD: IMG-OP-IT-37</span>
     </div>
-    <p>Manual operativo e instrucción de trabajo para estandarización en barra — (SGC)</p>
+    <p>Manual operativo e instrucción de trabajo para estandarización en barra — Sistema de Gestión de Calidad (SGC)</p>
 </div>
 """,
     unsafe_allow_html=True,
 )
 
-# Diccionario inteligente de imágenes por palabra clave
+# Diccionario inteligente de imágenes
 BEVERAGE_IMAGES = {
     "AMERICANO": (
         "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80"
@@ -367,15 +366,47 @@ if busqueda:
           .str.contains(busqueda, case=False, na=False)
   ]
 
-# Métricas Rápidas
+# -----------------------------------------------------------------------------
+# 📊 BLOQUE DE MÉTRICAS OPERATIVAS CENTRADAS Y CON TAMAÑO AUMENTADO
+# -----------------------------------------------------------------------------
 col_m1, col_m2, col_m3 = st.columns(3)
-col_m1.metric("☕ Total Recetas", len(df_display))
-col_m2.metric("📋 Categoría", cat_filtro)
-col_m3.metric("⏱️ Tiempo Promedio", "2 - 5 min")
 
-st.markdown("---")
+with col_m1:
+  st.markdown(
+      f"""
+    <div style="text-align: center; background-color: #F8FAFC; padding: 18px; border-radius: 12px; border: 1px solid #E2E8F0; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <p style="color: #64748B; font-size: 1.15rem; font-weight: 800; margin-bottom: 6px; letter-spacing: 0.5px;">☕ TOTAL RECETAS</p>
+        <p style="color: #0A192F; font-size: 2.3rem; font-weight: 800; margin: 0;">{len(df_display)}</p>
+    </div>
+    """,
+      unsafe_allow_html=True,
+  )
 
-# Renderizado de Tarjetas Visuales
+with col_m2:
+  st.markdown(
+      f"""
+    <div style="text-align: center; background-color: #F8FAFC; padding: 18px; border-radius: 12px; border: 1px solid #E2E8F0; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <p style="color: #64748B; font-size: 1.15rem; font-weight: 800; margin-bottom: 6px; letter-spacing: 0.5px;">📋 CATEGORÍA ACTIVA</p>
+        <p style="color: #0A192F; font-size: 2.3rem; font-weight: 800; margin: 0;">{cat_filtro}</p>
+    </div>
+    """,
+      unsafe_allow_html=True,
+  )
+
+with col_m3:
+  st.markdown(
+      """
+    <div style="text-align: center; background-color: #F8FAFC; padding: 18px; border-radius: 12px; border: 1px solid #E2E8F0; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <p style="color: #64748B; font-size: 1.15rem; font-weight: 800; margin-bottom: 6px; letter-spacing: 0.5px;">⏱️ TIEMPO PROMEDIO</p>
+        <p style="color: #0A192F; font-size: 2.3rem; font-weight: 800; margin: 0;">2 - 5 min</p>
+    </div>
+    """,
+      unsafe_allow_html=True,
+  )
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+# Renderizado de Tarjetas Visuales de Recetas
 if df_display.empty:
   st.warning("No se encontraron recetas con los criterios seleccionados.")
 else:
@@ -430,3 +461,5 @@ else:
             with st.expander("🥛 Opciones de Leche & Modificadores"):
               for mod in row["Mods_16oz"]:
                 st.markdown(f"▪️ {mod}")
+
+    
