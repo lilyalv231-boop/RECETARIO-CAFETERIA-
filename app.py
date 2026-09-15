@@ -1,58 +1,113 @@
 import pandas as pd
 import streamlit as st
 
-# Configuración de página con estética de Cafetería
+# Configuración de página
 st.set_page_config(
-    page_title="Manual de Recetas - Cafetería", page_icon="☕", layout="wide"
+    page_title="Recetario Digital - Cafetería",
+    page_icon="☕",
+    layout="wide",
+    initial_sidebar_state="expanded",
 )
 
-# Estilo visual moderno
+# 🎨 ESTILOS CSS AVANZADOS Y PALETA DE COLORES CAFETERÍA
 st.markdown(
     """
 <style>
-    .main { background-color: #fcfbf9; }
-    .stAppHeader { background-color: rgba(0,0,0,0); }
-    .badge-bar {
-        background-color: #2e1503;
-        color: #ffffff;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.85rem;
+    /* Fondo general */
+    .stApp {
+        background-color: #faf7f2;
     }
-    .badge-time {
-        background-color: #e8f5e9;
-        color: #2e7d32;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.85rem;
+    
+    /* Header principal estilo Banner */
+    .hero-banner {
+        background: linear-gradient(135deg, #2c1d11 0%, #4a3222 100%);
+        color: #fceade;
+        padding: 24px 30px;
+        border-radius: 16px;
+        margin-bottom: 25px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.12);
     }
-    .badge-equip {
-        background-color: #e3f2fd;
-        color: #1565c0;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.85rem;
+    .hero-banner h1 {
+        color: #f7d0a1;
+        margin: 0;
+        font-family: 'Helvetica Neue', sans-serif;
+        font-weight: 700;
     }
-    .mod-section {
-        background-color: #fff9f2;
-        border-left: 3px solid #f57c00;
-        padding: 8px 12px;
-        border-radius: 4px;
-        margin-top: 10px;
+    .hero-banner p {
+        color: #e0d0c1;
+        margin-top: 5px;
+        font-size: 1.05rem;
+    }
+
+    /* Badges / Etiquetas estilizadas */
+    .badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-right: 6px;
+    }
+    .badge-cat { background-color: #f3e5f5; color: #7b1fa2; border: 1px solid #e1bee7; }
+    .badge-prep { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+    .badge-equip { background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+    .badge-life { background-color: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
+
+    /* Tarjeta de Receta */
+    .recipe-card-header {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 15px;
+        border-left: 5px solid #8d6e63;
+    }
+    
+    /* Pestañas de tamaños */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        background-color: #efebe9;
+        border-radius: 8px 8px 0 0;
+        padding: 8px 16px;
+        font-weight: bold;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: #6d4c41 !important;
+        color: white !important;
     }
 </style>
 """,
     unsafe_allow_html=True,
 )
 
-st.title("☕ Recetario & Manual Operativo de Barra")
-st.caption("Estandarización de Bebidas, Dosificación e Insumos")
+# Banner de Encabezado
+st.markdown(
+    """
+<div class="hero-banner">
+    <h1>☕ Manual & Recetario Operativo de Barra</h1>
+    <p>Estandarización visual de bebidas, dosificación exacta e insumos por presentación.</p>
+</div>
+""",
+    unsafe_allow_html=True,
+)
 
 
-# Palabras clave para detectar modificadores
+# Imágenes por defecto para la cafetería
+DEFAULT_IMAGES = {
+    "ESPECIALES": (
+        "https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=600&q=80"
+    ),
+    "CLÁSICOS": (
+        "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80"
+    ),
+    "FRAPPPES": (
+        "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80"
+    ),
+    "DE TEMPORADA": (
+        "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
+    ),
+}
+
 MODIFIER_KEYWORDS = [
     "LECHE ENTERA",
     "LECHE LIGHT",
@@ -67,7 +122,6 @@ MODIFIER_KEYWORDS = [
 ]
 
 
-# Función para parsear el Excel agrupando modificadores
 @st.cache_data
 def parse_cafeteria_excel(file_path):
   xl = pd.ExcelFile(file_path)
@@ -91,6 +145,16 @@ def parse_cafeteria_excel(file_path):
 
       nombre = sub_df.iloc[0, 5] if pd.notna(sub_df.iloc[0, 5]) else "Sin Nombre"
       categoria = sheet_name
+
+      # Intentar extraer URL de fotografía de la fila 8 si existe
+      foto_url = None
+      if len(sub_df) > 2 and pd.notna(sub_df.iloc[2, 5]):
+        candidate = str(sub_df.iloc[2, 5]).strip()
+        if candidate.startswith("http"):
+          foto_url = candidate
+
+      if not foto_url:
+        foto_url = DEFAULT_IMAGES.get(categoria, DEFAULT_IMAGES["CLÁSICOS"])
 
       tiempo_prep, tiempo_vida, equipo = "2-5 MIN", "10 MIN", "MÁQUINA ESPRESSO"
 
@@ -125,26 +189,25 @@ def parse_cafeteria_excel(file_path):
               and ing_name != "INGREDIENTE"
           ):
 
-            # Determinar si es un ingrediente base o modificador
             is_modifier = any(
                 kw in ing_name.upper() for kw in MODIFIER_KEYWORDS
             )
 
-            # Extraer 12 oz
+            # 12 oz
             cant_12 = ing_row.iloc[7] if len(ing_row) > 7 else None
             um_12 = ing_row.iloc[8] if len(ing_row) > 8 else ""
             if pd.notna(cant_12) and cant_12 != 0:
-              item_str = f"{ing_name}: {cant_12} {um_12}".strip()
+              item_str = f"{ing_name}: **{cant_12} {um_12}**".strip()
               if is_modifier:
                 mods_12.append(item_str)
               else:
                 ing_base_12.append(item_str)
 
-            # Extraer 16 oz
+            # 16 oz
             cant_16 = ing_row.iloc[10] if len(ing_row) > 10 else None
             um_16 = ing_row.iloc[11] if len(ing_row) > 11 else ""
             if pd.notna(cant_16) and cant_16 != 0:
-              item_str = f"{ing_name}: {cant_16} {um_16}".strip()
+              item_str = f"{ing_name}: **{cant_16} {um_16}**".strip()
               if is_modifier:
                 mods_16.append(item_str)
               else:
@@ -153,6 +216,7 @@ def parse_cafeteria_excel(file_path):
       all_recipes.append({
           "Nombre": str(nombre).strip(),
           "Categoria": categoria,
+          "Foto": foto_url,
           "Tiempo_Prep": (
               str(tiempo_prep) if pd.notna(tiempo_prep) else "2-5 MIN"
           ),
@@ -171,7 +235,6 @@ def parse_cafeteria_excel(file_path):
   return pd.DataFrame(all_recipes)
 
 
-# Cargar datos
 excel_file = "Auditoria Recetas Cafetería 2026.xlsx"
 try:
   recipes_df = parse_cafeteria_excel(excel_file)
@@ -179,15 +242,17 @@ except Exception as e:
   st.error(f"Error al leer el archivo Excel: {e}")
   st.stop()
 
-# Menú Lateral
-st.sidebar.header("🔍 Filtros de Barra")
+# Sidebar con diseño de Filtros
+st.sidebar.image(
+    "https://cdn-icons-png.flaticon.com/512/924/924514.png", width=80
+)
+st.sidebar.title("Filtros de Barra")
 cat_filtro = st.sidebar.selectbox(
-    "Sección de Menú:",
+    "Sección del Menú:",
     ["TODAS"] + list(recipes_df["Categoria"].unique()),
 )
-busqueda = st.sidebar.text_input("🔎 Buscar bebida o insumo:")
+busqueda = st.sidebar.text_input("🔎 Buscar por ingrediente o bebida:")
 
-# Filtrado
 df_display = recipes_df.copy()
 if cat_filtro != "TODAS":
   df_display = df_display[df_display["Categoria"] == cat_filtro]
@@ -203,65 +268,68 @@ if busqueda:
           .str.contains(busqueda, case=False, na=False)
   ]
 
-# Métricas
-col1, col2, col3 = st.columns(3)
-col1.metric("Bebidas Estandarizadas", len(df_display))
-col2.metric("Categoría Activa", cat_filtro)
-col3.metric("Pestañas en Menú", recipes_df["Categoria"].nunique())
+# Métricas visuales estilo Cards
+col_m1, col_m2, col_m3 = st.columns(3)
+col_m1.metric("☕ Total Recetas", len(df_display))
+col_m2.metric("📋 Categoría", cat_filtro)
+col_m3.metric("⏱️ SLA Promedio", "2 - 5 min")
 
 st.markdown("---")
 
-# Despliegue de Recetas
+# Renderizado de Tarjetas Visuales (2 por fila)
 if df_display.empty:
-  st.warning("No se encontraron recetas con los criterios de búsqueda.")
+  st.warning("No se encontraron recetas con los criterios seleccionados.")
 else:
-  for idx, row in df_display.iterrows():
-    with st.container(border=True):
-      header_col1, header_col2 = st.columns([3, 1])
+  cols = st.columns(2)
+  for idx, row in df_display.reset_index(drop=True).iterrows():
+    with cols[idx % 2]:
+      with st.container(border=True):
+        # Encabezado con foto a la izquierda e información a la derecha
+        col_img, col_detail = st.columns([1, 1.4])
 
-      with header_col1:
-        st.subheader(f"🥤 {row['Nombre']}")
-        st.markdown(
-            f"<span class='badge-bar'>{row['Categoria']}</span> "
-            f"<span class='badge-time'>⏱️ Prep: {row['Tiempo_Prep']}</span> "
-            f"<span class='badge-equip'>🛠️ {row['Equipo']}</span>",
-            unsafe_allow_html=True,
-        )
+        with col_img:
+          st.image(row["Foto"], use_container_width=True)
 
-      with header_col2:
-        st.caption(f"**Tiempo de vida:** {row['Tiempo_Vida']}")
+        with col_detail:
+          st.markdown(f"### {row['Nombre']}")
+          st.markdown(
+              f"""
+                    <span class="badge badge-cat">{row['Categoria']}</span>
+                    <span class="badge badge-prep">⏱️ {row['Tiempo_Prep']}</span>
+                    <br><br>
+                    <span class="badge badge-equip">🛠️ {row['Equipo']}</span>
+                    <span class="badge badge-life">⏳ Vida: {row['Tiempo_Vida']}</span>
+                    """,
+              unsafe_allow_html=True,
+          )
 
-      st.write("")
+        st.write("")
 
-      # Columnas de 12 oz y 16 oz
-      col_12, col_16 = st.columns(2)
+        # Pestañas interactivas para 12 oz y 16 oz
+        tab12, tab16 = st.tabs(["🥤 Presentación 12 oz", "🥤 Presentación 16 oz"])
 
-      # Render 12 oz
-      with col_12:
-        st.markdown("##### 🥤 Presentación 12 oz")
-        st.markdown("**Receta Base:**")
-        if row["Base_12oz"]:
-          for ing in row["Base_12oz"]:
-            st.write(f"• {ing}")
-        else:
-          st.info("Sin receta base especificada")
+        with tab12:
+          if row["Base_12oz"]:
+            st.markdown("**Receta Base:**")
+            for ing in row["Base_12oz"]:
+              st.markdown(f"• {ing}")
+          else:
+            st.caption("No aplica / Sin especificación para 12 oz")
 
-        if row["Mods_12oz"]:
-          with st.expander("🥛 Opciones de Leche / Modificadores (12 oz)"):
-            for mod in row["Mods_12oz"]:
-              st.write(f"▪️ {mod}")
+          if row["Mods_12oz"]:
+            with st.expander("🥛 Opciones de Leche & Modificadores"):
+              for mod in row["Mods_12oz"]:
+                st.markdown(f"▪️ {mod}")
 
-      # Render 16 oz
-      with col_16:
-        st.markdown("##### 🥤 Presentación 16 oz")
-        st.markdown("**Receta Base:**")
-        if row["Base_16oz"]:
-          for ing in row["Base_16oz"]:
-            st.write(f"• {ing}")
-        else:
-          st.info("Sin receta base especificada")
+        with tab16:
+          if row["Base_16oz"]:
+            st.markdown("**Receta Base:**")
+            for ing in row["Base_16oz"]:
+              st.markdown(f"• {ing}")
+          else:
+            st.caption("No aplica / Sin especificación para 16 oz")
 
-        if row["Mods_16oz"]:
-          with st.expander("🥛 Opciones de Leche / Modificadores (16 oz)"):
-            for mod in row["Mods_16oz"]:
-              st.write(f"▪️ {mod}")
+          if row["Mods_16oz"]:
+            with st.expander("🥛 Opciones de Leche & Modificadores"):
+              for mod in row["Mods_16oz"]:
+                st.markdown(f"▪️ {mod}")
