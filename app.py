@@ -5,7 +5,7 @@ import streamlit as st
 
 # Configuración de página
 st.set_page_config(
-    page_title="Recetario Digital - Il Mercato Gentiloni",
+    page_title="RECETARIO CAFETERIA IMG",
     page_icon="☕",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -16,7 +16,7 @@ st.set_page_config(
 # -----------------------------------------------------------------------------
 LOGO_FILENAME = "Logo Mercato_negro-03 (2).png"
 
-# Función para convertir la imagen local a Base64 para el HTML del banner
+
 def get_image_base64(file_path):
   if os.path.exists(file_path):
     with open(file_path, "rb") as f:
@@ -34,56 +34,43 @@ except Exception:
   pass
 
 # -----------------------------------------------------------------------------
-# 🎨 PALETA DE COLORES ELEGANTE: AZUL MARINO Y BLANCO
+# 🎨 ESTILOS LIMPIOS: FONDO BLANCO Y TEXTOS EN AZUL MARINO (#0A192F)
 # -----------------------------------------------------------------------------
 st.markdown(
     """
 <style>
-    /* Fondo general */
+    /* Fondo general Blanco Pulido */
     .stApp {
-        background-color: #F8FAFC;
-    }
-    
-    /* Portada / Hero Banner en Azul Marino */
-    .cover-banner {
-        background: linear-gradient(135deg, #0A192F 0%, #1E3A8A 60%, #1E40AF 100%);
-        border-radius: 18px;
-        padding: 35px 30px;
-        color: #FFFFFF;
-        margin-bottom: 25px;
-        box-shadow: 0 10px 25px rgba(10, 25, 47, 0.2);
-        border: 1px solid #1E293B;
-    }
-    
-    .logo-container {
-        display: inline-block;
         background-color: #FFFFFF;
-        padding: 10px 20px;
-        border-radius: 12px;
-        margin-bottom: 18px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
     
-    .company-logo-banner {
-        max-height: 55px;
+    /* Header Superior sin Banner Azul */
+    .clean-header {
+        padding: 10px 0px 20px 0px;
+        border-bottom: 2px solid #E2E8F0;
+        margin-bottom: 25px;
+    }
+    
+    .clean-header-logo {
+        max-height: 65px;
+        margin-bottom: 15px;
         display: block;
     }
     
-    .cover-banner h1 {
-        color: #FFFFFF;
+    .clean-header h1 {
+        color: #0A192F;
         font-family: 'Helvetica Neue', sans-serif;
-        font-size: 2.2rem;
+        font-size: 2.3rem;
         font-weight: 800;
-        margin: 0 0 8px 0;
+        margin: 0 0 6px 0;
         letter-spacing: -0.5px;
     }
     
-    .cover-banner p {
-        color: #93C5FD;
-        font-size: 1.05rem;
+    .clean-header p {
+        color: #334155;
+        font-size: 1.1rem;
         margin: 0;
-        max-width: 850px;
-        font-weight: 400;
+        font-weight: 500;
     }
 
     /* Badges / Etiquetas */
@@ -108,7 +95,7 @@ st.markdown(
         box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05) !important;
     }
 
-    /* Pestañas */
+    /* Pestañas de Presentación */
     .stTabs [data-baseweb="tab-list"] { gap: 8px; }
     .stTabs [data-baseweb="tab"] { 
         background-color: #F1F5F9; 
@@ -126,27 +113,27 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Generación condicional del contenedor del logo en la portada
+# Render del Logo en el Encabezado
 logo_html = (
-    f'<div class="logo-container"><img src="{logo_base64}"'
-    ' class="company-logo-banner" alt="Il Mercato Gentiloni"></div>'
+    f'<img src="{logo_base64}" class="clean-header-logo" alt="Il Mercato'
+    ' Gentiloni">'
     if logo_base64
     else ""
 )
 
-# Portada Banner
+# Encabezado Limpio con Fondo Blanco y Letras Azul Marino
 st.markdown(
     f"""
-<div class="cover-banner">
+<div class="clean-header">
     {logo_html}
-    <h1>☕ Manual Operativo & Recetario de Barra</h1>
-    <p>Estandarización institucional de bebidas: dosificación exacta por presentación, insumos base y modificadores.</p>
+    <h1>☕ RECETARIO CAFETERIA IMG</h1>
+    <p>Manual operativo y guía de estandarización para baristas — Il Mercato Gentiloni</p>
 </div>
 """,
     unsafe_allow_html=True,
 )
 
-# Diccionario inteligente de imágenes
+# Diccionario inteligente de imágenes por palabra clave
 BEVERAGE_IMAGES = {
     "AMERICANO": (
         "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80"
@@ -352,7 +339,7 @@ if busqueda:
           .str.contains(busqueda, case=False, na=False)
   ]
 
-# Métricas
+# Métricas Rápidas
 col_m1, col_m2, col_m3 = st.columns(3)
 col_m1.metric("☕ Total Recetas", len(df_display))
 col_m2.metric("📋 Categoría", cat_filtro)
@@ -360,7 +347,7 @@ col_m3.metric("⏱️ SLA Promedio", "2 - 5 min")
 
 st.markdown("---")
 
-# Renderizado de Tarjetas
+# Renderizado de Tarjetas Visuales
 if df_display.empty:
   st.warning("No se encontraron recetas con los criterios seleccionados.")
 else:
